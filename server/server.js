@@ -3,7 +3,7 @@
 import express from 'express'
 import path from 'path'
 import thunk from 'redux-thunk'
-import { match, RouterContext } from 'react-router'
+import { match } from 'react-router'
 import { createStore, applyMiddleware, compose } from 'redux'
 import createHistory from 'react-router/lib/createMemoryHistory'
 import routes from '../app/routes'
@@ -12,6 +12,8 @@ import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import React from 'react'
 import serialize from 'serialize-javascript'
+import { ReduxAsyncConnect, loadOnServer } from 'redux-connect'
+import 'isomorphic-fetch'
 
 const app = express()
 
@@ -42,46 +44,50 @@ app.use((req, res) => {
         global.webpack_isomorphic_tools.refresh()
       }
 
-      // You can also check renderProps.components or renderProps.routes for
-      // your "not found" component or route respectively, and send a 404 as
-      // below, if you're using a catch-all route.
-      const serverRender = renderToString(
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>
-      )
-      const assets = global.webpack_isomorphic_tools.assets()
-      /* styles (will be present only in production with webpack extract text plugin) */
-      const stylesheets = Object.keys(assets.styles).map((style) =>
-        `<link href='${assets.styles[style]}' media="screen, projection" rel="stylesheet" type="text/css"/>`)
+      console.log('Loading on server')
+      loadOnServer(Object.assign({}, renderProps, { store })).then(() => {
+        console.log('Loaded on server')
+        // You can also check renderProps.components or renderProps.routes for
+        // your "not found" component or route respectively, and send a 404 as
+        // below, if you're using a catch-all route.
+        const serverRender = renderToString(
+          <Provider store={store}>
+            <ReduxAsyncConnect {...renderProps} />
+          </Provider>
+        )
+        const assets = global.webpack_isomorphic_tools.assets()
+        /* styles (will be present only in production with webpack extract text plugin) */
+        const stylesheets = Object.keys(assets.styles).map((style) =>
+          `<link href='${assets.styles[style]}' media="screen, projection" rel="stylesheet" type="text/css"/>`)
 
-      const inlineStyles = Object.keys(assets.assets)
-        .map(k => assets.assets[k])
-        .filter(v => v._style)
-        .map(v => `<style>${v._style}</style>`)
+        const inlineStyles = Object.keys(assets.assets)
+          .map(k => assets.assets[k])
+          .filter(v => v._style)
+          .map(v => `<style>${v._style}</style>`)
 
-      const serverState = `<script charSet='UTF-8'>window.__data=${serialize(store.getState())}</script>`
-      const bundleScriptFile = `<script src=${assets.javascript.main} charSet='UTF-8'></script>`
+        const serverState = `<script charSet='UTF-8'>window.__data=${serialize(store.getState())}</script>`
+        const bundleScriptFile = `<script src=${assets.javascript.main} charSet='UTF-8'></script>`
 
-      res.set('content-type', 'text/html')
-      res.status(200).send(`<!doctype html>
-<html lang='en-us'>
-  <head>
-    <link rel='shortcut icon' href='/favicon.ico' />
-    <meta charSet='utf-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
-    <meta httpEquiv='x-ua-compatible' content='ie=edge' />
-    <title>universal-react</title>
-    ${stylesheets.join('\r\n')}
-    ${inlineStyles.join('\r\n')}
-  </head>
-  <body>
-    <div id="app">${serverRender}</div>
-    ${serverState}
-    ${bundleScriptFile}
-  </body>
-</html>`)
-      res.end()
+        res.set('content-type', 'text/html')
+        res.status(200).send(`<!doctype html>
+  <html lang='en-us'>
+    <head>
+      <link rel='shortcut icon' href='/favicon.ico' />
+      <meta charSet='utf-8' />
+      <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
+      <meta httpEquiv='x-ua-compatible' content='ie=edge' />
+      <title>universal-react</title>
+      ${stylesheets.join('\r\n')}
+      ${inlineStyles.join('\r\n')}
+    </head>
+    <body>
+      <div id="app">${serverRender}</div>
+      ${serverState}
+      ${bundleScriptFile}
+    </body>
+  </html>`)
+        res.end()
+      })
     } else {
       res.status(404).send('Not found')
     }

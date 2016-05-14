@@ -20,6 +20,15 @@ module.exports = {
       extension: 'svg',
       parser: WebpackIsomorphicToolsPlugin.url_loader_parser
     },
+    fonts: {
+      extensions: [
+        'woff',
+        'woff2',
+        'ttf',
+        'eot'
+      ],
+      parser: WebpackIsomorphicToolsPlugin.url_loader_parser
+    },
     style_modules: {
       extensions: ['scss'],
       filter(module, regex, options, log) {

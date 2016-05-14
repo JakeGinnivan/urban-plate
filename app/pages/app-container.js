@@ -1,15 +1,24 @@
 import React from 'react'
 import { Link } from 'react-router'
-import styles from './app-container.module.scss'
+import { Navbar, NavItem, Nav } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
+import logo from '../assets/logo.png'
 
 const AppContainer = ({ children }) => (
   <div>
-    <header className={styles.nav}>
-      <Link to='/'>Home</Link>
-      <Link to='/recipes'>Recipes</Link>
-      <Link to='/about'>About</Link>
-    </header>
-    <div className={styles.content}>
+    <Navbar staticTop>
+      <Navbar.Header>
+        <Navbar.Brand>
+          <Link to='/'><img src={logo} role='presentation' /></Link>
+        </Navbar.Brand>
+      </Navbar.Header>
+      <Nav>
+        <LinkContainer to='/recipes'><NavItem>Recipes</NavItem></LinkContainer>
+        <LinkContainer to='/ingredients'><NavItem>ingredients</NavItem></LinkContainer>
+        <LinkContainer to='/about'><NavItem>About</NavItem></LinkContainer>
+      </Nav>
+    </Navbar>
+    <div className='container'>
       {children}
     </div>
   </div>

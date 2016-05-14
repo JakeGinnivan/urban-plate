@@ -4,6 +4,7 @@ import Home from './pages/home'
 import NotFound from './pages/404'
 import About from './pages/about'
 import RecipeRoutes from './pages/recipes/routes'
+import IngredientsRoutes from './pages/ingredients/routes'
 import { Route, IndexRoute } from 'react-router'
 
 export default (
@@ -15,6 +16,7 @@ export default (
     <Route path='about' component={About} />
 
     {RecipeRoutes}
+    {IngredientsRoutes}
 
     { /* Catch all route */ }
     <Route path='*' component={NotFound} status={404} />

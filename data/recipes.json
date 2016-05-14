@@ -1,0 +1,52 @@
+{
+  "difficulties": [
+    {
+      "id": 1,
+      "name": "Easy"
+    }
+  ],
+  "measurements": [
+    {
+      "id": 1,
+      "type": "Cup"
+    },
+    {
+      "id": 2,
+      "type": "Table Spoon"
+    },
+    {
+      "id": 3,
+      "type": "Cloves"
+    },
+    {
+      "id": 4,
+      "type": "Ounce"
+    },
+    {
+      "id": 5,
+      "type": "Tea Spoons"
+    },
+    {
+      "id": 6,
+      "type": "Pounds"
+    },
+    {
+      "id": 7,
+      "type": "Kilo"
+    },
+    {
+      "id": 8,
+      "type": "Can"
+    }
+  ],
+  "ingredients": [
+    {
+      "id": 1,
+      "name": "Pork Ribs"
+    },
+    {
+      "id": 2,
+      "name": "BBQ Sauce"
+    }
+  ]
+}
