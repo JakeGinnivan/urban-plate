@@ -1,0 +1,21 @@
+.react-progress-bar {
+  margin-top: -20px;
+  margin-bottom: 20px;
+  width: 100%;
+  visibility: visible;
+  opacity: 1;
+  transition: all 400ms;
+  z-index: 9999999;
+  &.react-progress-bar-hide {
+    opacity: 0;
+    visibility: hidden;
+    z-index: -10;
+  }
+}
+
+.react-progress-bar-percent {
+  height: 3px;
+  background: #29D;
+  box-shadow: 0 0 10px #29D, 0 0 5px #29D;
+  transition: all 200ms ease;
+}

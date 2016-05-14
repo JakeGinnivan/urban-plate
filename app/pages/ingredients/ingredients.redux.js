@@ -14,11 +14,8 @@ function parseJSON(response) {
 }
 
 export function loadIngredients() {
-  console.log('called')
   return dispatch => {
-    console.log('Thunk called')
     dispatch({ type: LOAD_INGREDIENTS })
-    console.log('Fetching', fetch)
 
     try {
       return fetch('http://localhost:3002/ingredients')
@@ -43,7 +40,8 @@ export default function (state = {}, action) {
   switch (action.type) {
     case `${LOAD_INGREDIENTS}_SUCCESS`:
       return Object.assign({}, state, {
-        ingredients: action.result
+        list: action.result,
+        loaded: true
       })
     default:
       return state

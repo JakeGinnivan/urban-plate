@@ -44,9 +44,7 @@ app.use((req, res) => {
         global.webpack_isomorphic_tools.refresh()
       }
 
-      console.log('Loading on server')
       loadOnServer(Object.assign({}, renderProps, { store })).then(() => {
-        console.log('Loaded on server')
         // You can also check renderProps.components or renderProps.routes for
         // your "not found" component or route respectively, and send a 404 as
         // below, if you're using a catch-all route.
