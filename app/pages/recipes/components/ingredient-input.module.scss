@@ -1,0 +1,41 @@
+.input {
+  font-size: 14px;
+  line-height: 1.42857;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 12px;
+
+  &:active {
+    border: 0;
+  }
+
+  &:focus {
+    border: 0;
+    outline: 0;
+  }
+}
+
+.inputContainer {
+  display: inline-block !important;
+  flex-grow: 100;
+}
+
+.container {
+  display: flex !important;
+  padding: 0 !important;
+}
+
+.qty {
+  margin: auto -3px auto 9px;
+  padding: 0 3px;
+  vertical-align: middle;
+  border-radius: 4px;
+}
+
+.unit {
+  margin: auto -3px auto 9px;
+  padding: 0 3px;
+  vertical-align: middle;
+  border-radius: 4px;
+}

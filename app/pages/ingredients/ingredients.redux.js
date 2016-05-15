@@ -1,4 +1,5 @@
 export const LOAD_INGREDIENTS = 'ingredients/LOAD'
+export const CREATE_INGREDIENT = 'ingredients/CREATE'
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -36,12 +37,46 @@ export function loadIngredients() {
   }
 }
 
+export function create(ingredient) {
+  return dispatch => {
+    dispatch({ type: CREATE_INGREDIENT })
+
+    try {
+      return fetch('http://localhost:3002/ingredients', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(ingredient)
+      })
+        .then(checkStatus)
+        .then(parseJSON)
+        .then((response) => {
+          console.log('request succeeded with JSON response', response)
+          dispatch({
+            type: `${CREATE_INGREDIENT}_SUCCESS`,
+            created: response
+          })
+        }).catch((error) => {
+          console.log('request failed', error)
+        })
+    } catch (err) {
+      console.log('Error', err)
+    }
+  }
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case `${LOAD_INGREDIENTS}_SUCCESS`:
       return Object.assign({}, state, {
         list: action.result,
         loaded: true
+      })
+    case `${CREATE_INGREDIENT}_SUCCESS`:
+      return Object.assign({}, state, {
+        list: [...state.list, action.created]
       })
     default:
       return state

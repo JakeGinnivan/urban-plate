@@ -5,48 +5,55 @@
       "name": "Easy"
     }
   ],
-  "measurements": [
+  "units": [
     {
       "id": 1,
-      "type": "Cup"
+      "name": "Cup",
+      "type": "volume"
     },
     {
       "id": 2,
-      "type": "Table Spoon"
+      "name": "Tea Spoon",
+      "abbreviation": "tsp",
+      "type": "volume"
     },
     {
       "id": 3,
-      "type": "Cloves"
-    },
-    {
-      "id": 4,
-      "type": "Ounce"
-    },
-    {
-      "id": 5,
-      "type": "Tea Spoons"
+      "name": "Tablespoon",
+      "abbreviation": "tbsp",
+      "type": "volume"
     },
     {
       "id": 6,
-      "type": "Pounds"
+      "name": "Millilitres",
+      "abbreviation": "ml",
+      "type": "volume"
     },
     {
       "id": 7,
-      "type": "Kilo"
+      "name": "Litres",
+      "abbreviation": "l",
+      "type": "volume"
     },
     {
       "id": 8,
-      "type": "Can"
+      "name": "Grams",
+      "abbreviation": "g",
+      "type": "weight"
     }
   ],
   "ingredients": [
     {
       "id": 1,
-      "name": "Pork Ribs"
+      "name": "Pork Ribs",
+      "measuredBy": "weight"
     },
     {
       "id": 2,
-      "name": "BBQ Sauce"
+      "name": "BBQ Sauce",
+      "measuredBy": "volume"
     }
+  ],
+  "recipes": [
   ]
 }
