@@ -52,8 +52,115 @@
       "id": 2,
       "name": "BBQ Sauce",
       "measuredBy": "volume"
+    },
+    {
+      "measuredBy": "volume",
+      "name": "Salt",
+      "id": 3
+    },
+    {
+      "measuredBy": "volume",
+      "name": "Flour",
+      "id": 4
+    },
+    {
+      "measuredBy": "count",
+      "name": "Clove Garlic",
+      "id": 5
+    },
+    {
+      "measuredBy": "count",
+      "name": "Whole Onion",
+      "id": 6
+    },
+    {
+      "measuredBy": "volume",
+      "name": "Pizza Sauce",
+      "id": 7
+    },
+    {
+      "measuredBy": "volume",
+      "name": "Shaved Ham",
+      "id": 8
+    },
+    {
+      "measuredBy": "volume",
+      "name": "Pineapple",
+      "id": 9
     }
   ],
   "recipes": [
+    {
+      "ingredients": [
+        {
+          "qty": "1",
+          "unit": {
+            "name": "Grams",
+            "abbreviation": "g",
+            "type": "weight"
+          },
+          "ingredient": {
+            "measuredBy": "weight",
+            "name": "Pizza Sauce"
+          }
+        },
+        {
+          "qty": "1/4",
+          "ingredient": {
+            "measuredBy": "count",
+            "name": "Pineapple"
+          },
+          "preparationInstructions": "peeled, cut into 2cm pieces"
+        },
+        {
+          "qty": "150",
+          "unit": {
+            "name": "Grams",
+            "abbreviation": "g",
+            "type": "weight"
+          },
+          "ingredient": {
+            "measuredBy": "weight",
+            "name": "Button Mushrooms"
+          }
+        },
+        {
+          "qty": "1",
+          "unit": {
+            "name": "Tea Spoon",
+            "abbreviation": "tsp",
+            "type": "volume"
+          },
+          "ingredient": {
+            "measuredBy": "volume",
+            "name": "Dried mixed Italian herbs"
+          }
+        },
+        {
+          "qty": "1",
+          "unit": {
+            "name": "Cup",
+            "type": "volume"
+          },
+          "ingredient": {
+            "measuredBy": "weight",
+            "name": "Dried mixed Italian herbs"
+          }
+        },
+        {
+          "qty": "1",
+          "unit": {
+            "name": "Cup",
+            "type": "volume"
+          },
+          "ingredient": {
+            "measuredBy": "weight",
+            "name": "Mozzarella Cheese"
+          }
+        }
+      ],
+      "name": "Hawaiian pizza",
+      "id": 1
+    }
   ]
 }

@@ -3,10 +3,7 @@ import { Link } from 'react-router'
 
 const RecipeContainer = ({ children }) => (
   <div>
-    <ul><li><Link to='/recipes/new'>New</Link></li></ul>
-    <div>
-      {children}
-    </div>
+    {children}
   </div>
 )
 

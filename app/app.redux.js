@@ -5,6 +5,9 @@ import { reducer as reduxAsyncConnect } from 'redux-connect'
 import ingredients from './pages/ingredients/ingredients.redux'
 
 export const LOAD_UNITS = 'app/LOAD_UNITS'
+export const CREATE_RECIPE = 'app/CREATE_RECIPE'
+export const LOAD_RECIPES = 'app/LOAD_RECIPES'
+export const LOAD_RECIPE = 'app/LOAD_RECIPE'
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -19,6 +22,50 @@ function parseJSON(response) {
   return response.json()
 }
 
+export function loadRecipes() {
+  return dispatch => {
+    dispatch({ type: LOAD_RECIPES })
+
+    try {
+      return fetch('http://localhost:3002/recipes')
+        .then(checkStatus)
+        .then(parseJSON)
+        .then((data) => {
+          dispatch({
+            type: `${LOAD_RECIPES}_SUCCESS`,
+            result: data
+          })
+        }).catch((error) => {
+          console.log('request failed', error)
+        })
+    } catch (err) {
+      console.log('Error', err)
+    }
+  }
+}
+
+export function loadRecipe(id) {
+  return dispatch => {
+    dispatch({ type: LOAD_RECIPE })
+
+    try {
+      return fetch(`http://localhost:3002/recipes/${id}`)
+        .then(checkStatus)
+        .then(parseJSON)
+        .then((data) => {
+          dispatch({
+            type: `${LOAD_RECIPE}_SUCCESS`,
+            result: data
+          })
+        }).catch((error) => {
+          console.log('request failed', error)
+        })
+    } catch (err) {
+      console.log('Error', err)
+    }
+  }
+}
+
 export function loadUnits() {
   return dispatch => {
     dispatch({ type: LOAD_UNITS })
@@ -28,10 +75,39 @@ export function loadUnits() {
         .then(checkStatus)
         .then(parseJSON)
         .then((data) => {
-          console.log('request succeeded with JSON response', data)
           dispatch({
             type: `${LOAD_UNITS}_SUCCESS`,
             result: data
+          })
+        }).catch((error) => {
+          console.log('request failed', error)
+        })
+    } catch (err) {
+      console.log('Error', err)
+    }
+  }
+}
+
+
+export function createRecipe(recipe) {
+  return dispatch => {
+    dispatch({ type: CREATE_RECIPE })
+
+    try {
+      return fetch('http://localhost:3002/recipes', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(recipe)
+      })
+        .then(checkStatus)
+        .then(parseJSON)
+        .then((response) => {
+          dispatch({
+            type: `${CREATE_RECIPE}_SUCCESS`,
+            created: response
           })
         }).catch((error) => {
           console.log('request failed', error)
@@ -48,6 +124,15 @@ const appReducer = (state = {}, action) => {
       return Object.assign({}, state, {
         units: action.result,
         unitsLoaded: true
+      })
+    case `${LOAD_RECIPES}_SUCCESS`:
+      return Object.assign({}, state, {
+        recipes: action.result,
+        recipesLoaded: true
+      })
+    case `${LOAD_RECIPE}_SUCCESS`:
+      return Object.assign({}, state, {
+        currentRecipe: action.result
       })
     default:
       return state

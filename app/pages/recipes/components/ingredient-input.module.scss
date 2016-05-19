@@ -4,7 +4,9 @@
   border: 0;
   width: 100%;
   height: 100%;
-  margin: 0 12px;
+  padding: 0 12px;
+  background: transparent;
+  margin: 0;
 
   &:active {
     border: 0;
@@ -31,6 +33,8 @@
   padding: 0 3px;
   vertical-align: middle;
   border-radius: 4px;
+  background: #E8F6FF;
+  border: 1px #BED7EB solid;
 }
 
 .unit {
@@ -38,4 +42,15 @@
   padding: 0 3px;
   vertical-align: middle;
   border-radius: 4px;
+  background: #E8F6FF;
+  border: 1px #BED7EB solid;
+}
+
+.ingredient {
+  margin: auto 9px auto 9px;
+  padding: 0 3px;
+  vertical-align: middle;
+  border-radius: 4px;
+  background: #E8F6FF;
+  border: 1px #BED7EB solid;
 }
