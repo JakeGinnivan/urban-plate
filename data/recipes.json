@@ -87,80 +87,117 @@
       "measuredBy": "volume",
       "name": "Pineapple",
       "id": 9
+    },
+    {
+      "measuredBy": "weight",
+      "name": "Button Mushrooms",
+      "id": 10
+    },
+    {
+      "measuredBy": "volume",
+      "name": "Dried mixed Italian herbs",
+      "id": 11
+    },
+    {
+      "measuredBy": "volume",
+      "name": "Grated Mozzarella Cheese",
+      "id": 12
+    },
+    {
+      "measuredBy": "count",
+      "name": "Pizza base",
+      "id": 13
     }
   ],
   "recipes": [
     {
       "ingredients": [
         {
+          "qty": "2",
+          "ingredient": 13
+        },
+        {
           "qty": "1",
-          "unit": {
-            "name": "Grams",
-            "abbreviation": "g",
-            "type": "weight"
-          },
-          "ingredient": {
-            "measuredBy": "weight",
-            "name": "Pizza Sauce"
-          }
+          "unit": 8,
+          "ingredient": 7
         },
         {
           "qty": "1/4",
-          "ingredient": {
-            "measuredBy": "count",
-            "name": "Pineapple"
-          },
+          "ingredient": 9,
           "preparationInstructions": "peeled, cut into 2cm pieces"
         },
         {
           "qty": "150",
-          "unit": {
-            "name": "Grams",
-            "abbreviation": "g",
-            "type": "weight"
-          },
-          "ingredient": {
-            "measuredBy": "weight",
-            "name": "Button Mushrooms"
-          }
+          "unit": 8,
+          "ingredient": 10
         },
         {
           "qty": "1",
-          "unit": {
-            "name": "Tea Spoon",
-            "abbreviation": "tsp",
-            "type": "volume"
-          },
-          "ingredient": {
-            "measuredBy": "volume",
-            "name": "Dried mixed Italian herbs"
-          }
+          "unit": 2,
+          "ingredient": 11
+        },
+        {
+          "qty": "500",
+          "unit": 8,
+          "ingredient": 8
         },
         {
           "qty": "1",
-          "unit": {
-            "name": "Cup",
-            "type": "volume"
-          },
-          "ingredient": {
-            "measuredBy": "weight",
-            "name": "Dried mixed Italian herbs"
-          }
-        },
-        {
-          "qty": "1",
-          "unit": {
-            "name": "Cup",
-            "type": "volume"
-          },
-          "ingredient": {
-            "measuredBy": "weight",
-            "name": "Mozzarella Cheese"
-          }
+          "unit": 1,
+          "ingredient": 12
         }
       ],
+      "instructions": [
+        "Preheat oven to 250°C. Place pizza bases onto 2 baking trays. Spread with sauce.",
+        "Scatter ham, pineapple, mushrooms and herbs over bases. Sprinkle with cheese. Bake for 10 minutes, swapping trays after 8 minutes, or until bases are crisp.",
+        "Cut pizzas into slices. Serve with spinach."
+      ],
+      "prepTime": 10,
+      "totalTime": 25,
+      "serves": 2,
+      "difficulty": 1,
       "name": "Hawaiian pizza",
       "id": 1
+    },
+    {
+      "ingredients": [
+        {}
+      ],
+      "id": 2
+    },
+    {
+      "ingredients": [
+        {
+          "qty": "1"
+        }
+      ],
+      "id": 3
+    },
+    {
+      "ingredients": [
+        {
+          "qty": "1"
+        }
+      ],
+      "id": 4
+    },
+    {
+      "ingredients": [
+        {
+          "qty": "1",
+          "unit": 3,
+          "ingredient": 4
+        }
+      ],
+      "id": 5
+    },
+    {
+      "ingredients": [
+        {
+          "qty": "1"
+        }
+      ],
+      "id": 6
     }
   ]
 }

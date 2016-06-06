@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { asyncConnect } from 'redux-connect'
 import { loadIngredients } from '../../ingredients.redux'
+import styles from './styles.module.scss'
 
 @asyncConnect([{
   promise: (props) => {
@@ -26,7 +27,7 @@ class IngredientsIndex extends React.Component {
     return (
       <div>
         {this.props.ingredients.map(i => (
-          <div key={i.id.toString()}>{i.name}</div>
+          <div key={i.id.toString()} className={styles.ingredient}>{i.name}</div>
         ))}
       </div>
     )

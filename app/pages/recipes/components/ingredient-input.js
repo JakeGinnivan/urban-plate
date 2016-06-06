@@ -4,6 +4,10 @@ import autobind from 'autobind-decorator'
 import { MenuItem, Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 
+const ESCAPE = 27
+const DOWN = 40
+const UP = 38
+
 const Suggestion = ({ searchTerm, text, isSelected }) => (
   <div>{isSelected && <Glyphicon glyph='chevron-right' />}{text}</div>
 )
@@ -53,30 +57,46 @@ export default class IngredientInput extends React.Component {
   }
 
   getUnitsSuggestions(text) {
-    return _.filter(
-        this.props.units,
-        u => u.name.toLowerCase().indexOf(text.toLowerCase()) !== -1)
-        .map(u => ({ text: `${u.name}${u.abbreviation ? ` (${u.abbreviation})` : ''}`, value: u }))
+    const unitSuggestions = _.filter(
+      this.props.units,
+      u => u.name.toLowerCase().indexOf(text.toLowerCase()) !== -1)
+      .map(u => ({ text: `${u.name}${u.abbreviation ? ` (${u.abbreviation})` : ''}`, value: u, isIngredient: false }))
+    const countIngredients = _.filter(
+      this.props.ingredients,
+      i => i.measuredBy === 'count')
+      .map(u => ({ text: u.name, value: u, isIngredient: true }))
+    return _.concat(unitSuggestions, countIngredients)
   }
 
-  changed(qty, unit, ingredient) {
+  changed(overrides) {
     this.props.onChange({
-      qty,
-      unit,
-      ingredient
+      qty: overrides.hasOwnProperty('qty') ? (overrides.qty || undefined) : this.state.qty,
+      unit: overrides.hasOwnProperty('unit')
+        ? overrides.unit || undefined
+        : this.state.unit && this.state.unit.id,
+      ingredient: overrides.hasOwnProperty('ingredient')
+        ? overrides.ingredient || undefined
+        : this.state.ingredient && this.state.ingredient.id
     })
   }
 
   handleInputChanged(e) {
+    this.setState({ currentValue: e.target.value, suggestions: this.getSuggestions(e.target.value) })
+  }
+
+  getSuggestions(forText) {
     let suggestions = this.state.suggestions
     if (this.state.editingUnit) {
-      suggestions = this.getUnitsSuggestions(e.target.value)
+      suggestions = this.getUnitsSuggestions(forText)
+    } else if (this.state.editingIngredient) {
+      suggestions = this.getIngredientsSuggestions(forText)
     }
 
-    this.setState({ currentValue: e.target.value, suggestions })
+    return suggestions
   }
 
   handleInputKeyDown(e) {
+    console.log(e.keyCode)
     // Handle space
     if (this.state.editingQty && e.keyCode === 32) {
       const qty = e.target.value
@@ -87,11 +107,11 @@ export default class IngredientInput extends React.Component {
         currentValue: '',
         suggestions: this.getUnitsSuggestions('')
       })
-      this.changed(qty)
+      this.changed({ qty })
       e.stopPropagation()
       e.preventDefault()
     } else if (this.state.editingUnit && e.keyCode === 8 && this.state.currentValue === '') {
-      // Handle delete
+      // Handle backspace on unit
       this.setState({
         qty: '',
         editingQty: true,
@@ -99,16 +119,35 @@ export default class IngredientInput extends React.Component {
         currentValue: this.state.qty,
         suggestions: []
       })
-      this.changed()
+      this.changed({ qty: false })
+    } else if (this.state.editingIngredient && e.keyCode === 8 && this.state.currentValue === '') {
+      // Handle backspace on ingredient
+      this.setState({
+        unit: '',
+        editingQty: false,
+        editingUnit: true,
+        editingIngredient: false,
+        currentValue: this.state.unit.name,
+        suggestions: []
+      })
+      this.changed({ unit: '' })
     }
-    if (this.state.suggestions.length > 0 && (e.keyCode === 40 || e.keyCode === 38)) {
-      if (e.keyCode === 38) {
+    if (this.state.suggestions.length > 0 && (e.keyCode === DOWN || e.keyCode === UP || e.keyCode === ESCAPE)) {
+      if (e.keyCode === UP) {
         this.setState({ selectedSuggestion: this.state.selectedSuggestion - 1 })
-      } else {
+      } else if (e.keyCode === DOWN) {
         this.setState({ selectedSuggestion: this.state.selectedSuggestion + 1 })
+      } else if (e.keyCode === ESCAPE) {
+        this.setState({ suggestions: [] })
       }
       e.stopPropagation()
       e.preventDefault()
+    }
+
+    if (this.state.suggestions.length === 0 && e.keyCode === DOWN) {
+      this.setState({
+        suggestions: this.getSuggestions(this.state.currentValue)
+      })
     }
 
     if (this.state.selectedSuggestion >= 0 && e.keyCode === 13) {
@@ -120,17 +159,22 @@ export default class IngredientInput extends React.Component {
   }
 
   selectSuggestion(suggestion) {
-    if (this.state.editingUnit) {
+    if (this.state.editingUnit && !suggestion.isIngredient) {
+      let ingredient = this.state.ingredient
+      if (ingredient && suggestion.value.type !== ingredient.measuredBy) {
+        ingredient = null
+      }
       this.setState({
-        currentValue: '',
+        currentValue: ingredient ? ingredient.name : '',
         unit: suggestion.value,
+        ingredient,
         selectedSuggestion: -1,
         suggestions: this.getIngredientsSuggestions('', suggestion.value),
         editingUnit: false,
         editingIngredient: true
       })
-      this.changed(this.state.qty, suggestion.value)
-    } else if (this.state.editingIngredient) {
+      this.changed({ qty: this.state.qty, unit: suggestion.value.id })
+    } else if (this.state.editingIngredient || suggestion.isIngredient) {
       this.setState({
         currentValue: '',
         ingredient: suggestion.value,
@@ -139,7 +183,11 @@ export default class IngredientInput extends React.Component {
         editingUnit: false,
         editingIngredient: false
       })
-      this.changed(this.state.qty, this.state.unit, suggestion.value)
+      this.changed({
+        qty: this.state.qty,
+        unit: this.state.unit && this.state.unit.id,
+        ingredient: suggestion.value.id
+      })
     }
   }
 
@@ -160,18 +208,21 @@ export default class IngredientInput extends React.Component {
       editingQty: true,
       editingUnit: false,
       editingIngredient: false,
+      qty: null,
       currentValue: this.state.qty,
       suggestions: []
     })
   }
 
   editUnit() {
+    const currentText = this.state.unit ? this.state.unit.name : ''
     this.setState({
       editingQty: false,
       editingUnit: true,
       editingIngredient: false,
-      currentValue: this.state.unit.name,
-      suggestions: this.getUnitsSuggestions(this.state.unit.name)
+      unit: null,
+      currentValue: currentText,
+      suggestions: this.getUnitsSuggestions(currentText)
     })
   }
 
@@ -180,6 +231,7 @@ export default class IngredientInput extends React.Component {
       editingQty: false,
       editingUnit: false,
       editingIngredient: true,
+      ingredient: null,
       currentValue: this.state.ingredient.name,
       suggestions: this.getIngredientsSuggestions(this.state.ingredient.name)
     })
@@ -224,6 +276,10 @@ export default class IngredientInput extends React.Component {
           <span className={style.unit} onClick={this.editUnit}>
             {this.state.unit.name}
           </span>
+        }
+        {!this.state.unit && !this.state.editingUnit
+          && this.state.ingredient && this.state.ingredient.measuredBy === 'count' &&
+          <span className={style.unit} onClick={this.editUnit}>x</span>
         }
         {this.state.editingUnit && editor}
 

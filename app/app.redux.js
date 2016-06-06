@@ -3,8 +3,10 @@ import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
 import { reducer as reduxAsyncConnect } from 'redux-connect'
 import ingredients from './ingredients.redux'
+import _ from 'lodash'
 
 export const LOAD_UNITS = 'app/LOAD_UNITS'
+export const LOAD_DIFFICULTIES = 'app/LOAD_DIFFICULTIES'
 export const CREATE_RECIPE = 'app/CREATE_RECIPE'
 export const LOAD_RECIPES = 'app/LOAD_RECIPES'
 export const LOAD_RECIPE = 'app/LOAD_RECIPE'
@@ -87,6 +89,27 @@ export function loadUnits() {
     }
   }
 }
+export function loadDifficulties() {
+  return dispatch => {
+    dispatch({ type: LOAD_DIFFICULTIES })
+
+    try {
+      return fetch('http://localhost:3002/difficulties')
+        .then(checkStatus)
+        .then(parseJSON)
+        .then((data) => {
+          dispatch({
+            type: `${LOAD_DIFFICULTIES}_SUCCESS`,
+            result: data
+          })
+        }).catch((error) => {
+          console.log('request failed', error)
+        })
+    } catch (err) {
+      console.log('Error', err)
+    }
+  }
+}
 
 
 export function createRecipe(recipe) {
@@ -133,6 +156,11 @@ const appReducer = (state = {}, action) => {
     case `${LOAD_RECIPE}_SUCCESS`:
       return Object.assign({}, state, {
         currentRecipe: action.result
+      })
+    case `${LOAD_DIFFICULTIES}_SUCCESS`:
+      return Object.assign({}, state, {
+        difficulties: action.result,
+        difficultiesLoaded: true
       })
     default:
       return state
