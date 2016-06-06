@@ -12,7 +12,8 @@ class NewIngredient extends React.Component {
   }
 
   handleSubmit(formData) {
-    this.props.dispatch(create(formData))
+    // TODO handle success/clear form
+    return this.props.dispatch(create(formData))
   }
 
   render() {

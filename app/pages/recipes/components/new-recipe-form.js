@@ -4,12 +4,23 @@ import { FormGroup, FormControl, Button } from 'react-bootstrap'
 import IngredientInput from './ingredient-input'
 
 const NewRecipeForm = props => {
-  const { handleSubmit, pristine, submitting } = props
+  const { handleSubmit, pristine, submitting, difficulties } = props
   return (
     <form onSubmit={handleSubmit}>
       <FormGroup>
         <label>Recipe Name</label>
         <Field name='name' component={v => <FormControl {...v} />} type='text' />
+      </FormGroup>
+      <FormGroup>
+        <label>Difficultly</label>
+        <Field name='difficulty' component={v => (
+          <FormControl {...v} componentClass='select'>
+            {difficulties.map(d => (
+              <option key={d.id} value={d.id}>{d.name}</option>
+            ))}
+          </FormControl>
+        )}
+        />
       </FormGroup>
 
       <FormGroup>
@@ -23,7 +34,7 @@ const NewRecipeForm = props => {
       </FormGroup>
       <FormGroup>
         <label>Number servings</label>
-        <Field name='numberServings' component={v => <FormControl {...v} />} type='text' />
+        <Field name='serves' component={v => <FormControl {...v} />} type='text' />
       </FormGroup>
 
       <h2>Ingredients</h2>
@@ -44,12 +55,12 @@ const NewRecipeForm = props => {
       )}
       />
       <h2>Steps</h2>
-      <FieldArray name='steps' component={steps => (
+      <FieldArray name='instructions' component={steps => (
         <div>
           {steps.map((name, index) => (
             <Field key={index.toString()} name={name} component={v => <FormControl {...v} />} type='text' />
           ))}
-          <Button onClick={() => steps.push({})}>Add Step</Button>
+          <Button onClick={() => steps.push('')}>Add Step</Button>
         </div>
       )}
       />
@@ -63,7 +74,8 @@ NewRecipeForm.propTypes = {
   pristine: React.PropTypes.bool.isRequired,
   submitting: React.PropTypes.bool.isRequired,
   units: React.PropTypes.array.isRequired,
-  ingredients: React.PropTypes.array.isRequired
+  ingredients: React.PropTypes.array.isRequired,
+  difficulties: React.PropTypes.array.isRequired
 }
 
 export default reduxForm({

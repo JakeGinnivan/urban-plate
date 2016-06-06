@@ -75,9 +75,12 @@ export default function (state = {}, action) {
         loaded: true
       })
     case `${CREATE_INGREDIENT}_SUCCESS`:
-      return Object.assign({}, state, {
-        list: [...state.list, action.created]
-      })
+      if (state.loaded) {
+        return Object.assign({}, state, {
+          list: [...state.list, action.created]
+        })
+      }
+      return state
     default:
       return state
   }

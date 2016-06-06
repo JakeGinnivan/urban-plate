@@ -107,6 +107,21 @@
       "measuredBy": "count",
       "name": "Pizza base",
       "id": 13
+    },
+    {
+      "name": "Cocoa",
+      "measuredBy": "volume",
+      "id": 14
+    },
+    {
+      "name": "Baking Soda",
+      "measuredBy": "volume",
+      "id": 15
+    },
+    {
+      "measuredBy": "volume",
+      "name": "Lager",
+      "id": 16
     }
   ],
   "recipes": [
@@ -160,44 +175,34 @@
       "id": 1
     },
     {
-      "ingredients": [
-        {}
-      ],
-      "id": 2
-    },
-    {
-      "ingredients": [
-        {
-          "qty": "1"
-        }
-      ],
-      "id": 3
-    },
-    {
-      "ingredients": [
-        {
-          "qty": "1"
-        }
-      ],
-      "id": 4
-    },
-    {
+      "name": "Brownies",
+      "prepTime": 10,
+      "totalTime": 25,
+      "serves": 4,
+      "difficulty": 1,
       "ingredients": [
         {
           "qty": "1",
-          "unit": 3,
+          "unit": 1,
           "ingredient": 4
-        }
-      ],
-      "id": 5
-    },
-    {
-      "ingredients": [
+        },
         {
-          "qty": "1"
+          "qty": "1",
+          "unit": 3,
+          "ingredient": 14
+        },
+        {
+          "qty": "1",
+          "unit": 2,
+          "ingredient": 3
         }
       ],
-      "id": 6
+      "instructions": [
+        "Preheat oven to 180C",
+        "Mix ingredients",
+        "Put on tray and bake for 20 mins"
+      ],
+      "id": 7
     }
   ]
 }
