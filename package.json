@@ -5,26 +5,50 @@
   "main": "app/index.js",
   "scripts": {
     "start": "better-npm-run start",
+    "start:ssr": "better-npm-run start:ssr",
+    "start:nodataload": "better-npm-run start:nodataload",
     "build:dev": "webpack --config scripts/webpack.config.dev.js",
     "build:prod": "webpack --config scripts/webpack.config.prod.js"
   },
   "betterScripts": {
-    "start": {
-      "command": "concurrent --kill-others \"better-npm-run hot-server\" \"better-npm-run dev-server\" \"better-npm-run api\"",
+    "start:ssr": {
+      "command": "concurrent --kill-others \"better-npm-run hot-server\" \"better-npm-run dev-server\" \"better-npm-run api\" --names \"hot-server,dev-server,api\" --prefix name",
       "env": {
         "hot": true,
-        "HOT_PORT": 3001,
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "SSR": true,
+        "SERVER_LOAD_DATA": true
+      }
+    },
+    "start": {
+      "command": "concurrent --kill-others \"better-npm-run hot-server\" \"better-npm-run dev-server\" \"better-npm-run api\" --names \"hot-server,dev-server,api\" --prefix name",
+      "env": {
+        "hot": true,
+        "NODE_ENV": "development",
+        "SSR": false,
+        "SERVER_LOAD_DATA": false
+      }
+    },
+    "start:nodataload": {
+      "command": "concurrent --kill-others \"better-npm-run hot-server\" \"better-npm-run dev-server\" \"better-npm-run api\" --names \"hot-server,dev-server,api\" --prefix name",
+      "env": {
+        "hot": true,
+        "NODE_ENV": "development",
+        "SSR": true,
+        "SERVER_LOAD_DATA": false
       }
     },
     "dev-server": {
-      "command": "nodemon server/index.js",
+      "command": "node server/index.js",
       "env": {
         "PORT": 3000
       }
     },
     "hot-server": {
-      "command": "node scripts/hot-server.js"
+      "command": "node scripts/hot-server.js",
+      "env": {
+        "HOT_PORT": 3001
+      }
     },
     "api": {
       "command": "json-server data/recipes.json --port 3002 --watch --delay 300"

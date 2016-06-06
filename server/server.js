@@ -18,7 +18,8 @@ import 'isomorphic-fetch'
 const app = express()
 
 app.use(express.static(path.join(__dirname, '..', 'dist')))
-
+console.log('SSR', process.env.SSR)
+console.log('SERVER_LOAD_DATA', process.env.SERVER_LOAD_DATA)
 // Create redux store
 const middleware = [thunk]
 let finalCreateStore
@@ -44,27 +45,40 @@ app.use((req, res) => {
         global.webpack_isomorphic_tools.refresh()
       }
 
-      loadOnServer(Object.assign({}, renderProps, { store })).then(() => {
-        // You can also check renderProps.components or renderProps.routes for
-        // your "not found" component or route respectively, and send a 404 as
-        // below, if you're using a catch-all route.
-        const serverRender = renderToString(
-          <Provider store={store}>
-            <ReduxAsyncConnect {...renderProps} />
-          </Provider>
-        )
+      const loadData = process.env.SERVER_LOAD_DATA
+        ? loadOnServer(Object.assign({}, renderProps, { store }))
+        : Promise.resolve(1)
+      loadData.then(() => {
+        let serverRender = ''
+        let serverState = ''
+        let stylesheets = []
+        let inlineStyles = []
+
+        let bundleScriptFile
         const assets = global.webpack_isomorphic_tools.assets()
-        /* styles (will be present only in production with webpack extract text plugin) */
-        const stylesheets = Object.keys(assets.styles).map((style) =>
-          `<link href='${assets.styles[style]}' media="screen, projection" rel="stylesheet" type="text/css"/>`)
+        if (process.env.SSR === true) {
+          // You can also check renderProps.components or renderProps.routes for
+          // your "not found" component or route respectively, and send a 404 as
+          // below, if you're using a catch-all route.
+          serverRender = renderToString(
+            <Provider store={store}>
+              <ReduxAsyncConnect {...renderProps} />
+            </Provider>
+          )
+          /* styles (will be present only in production with webpack extract text plugin) */
+          stylesheets = Object.keys(assets.styles).map((style) =>
+            `<link href='${assets.styles[style]}' media="screen, projection" rel="stylesheet" type="text/css"/>`)
 
-        const inlineStyles = Object.keys(assets.assets)
-          .map(k => assets.assets[k])
-          .filter(v => v._style)
-          .map(v => `<style>${v._style}</style>`)
+          inlineStyles = Object.keys(assets.assets)
+            .map(k => assets.assets[k])
+            .filter(v => v._style)
+            .map(v => `<style>${v._style}</style>`)
 
-        const serverState = `<script charSet='UTF-8'>window.__data=${serialize(store.getState())}</script>`
-        const bundleScriptFile = `<script src=${assets.javascript.main} charSet='UTF-8'></script>`
+          serverState = `<script charSet='UTF-8'>window.__data=${serialize(store.getState())}</script>`
+          bundleScriptFile = `<script src=${assets.javascript.main} charSet='UTF-8'></script>`
+        } else {
+          bundleScriptFile = `<script src=${assets.javascript.main} charSet='UTF-8'></script>`
+        }
 
         res.set('content-type', 'text/html')
         res.status(200).send(`<!doctype html>
