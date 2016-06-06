@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
 import { reducer as reduxAsyncConnect } from 'redux-connect'
-import ingredients from './pages/ingredients/ingredients.redux'
+import ingredients from './ingredients.redux'
 
 export const LOAD_UNITS = 'app/LOAD_UNITS'
 export const CREATE_RECIPE = 'app/CREATE_RECIPE'

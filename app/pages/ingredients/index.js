@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { asyncConnect } from 'redux-connect'
-import { loadIngredients } from './ingredients.redux'
+import { loadIngredients } from '../../ingredients.redux'
 
 @asyncConnect([{
   promise: (props) => {

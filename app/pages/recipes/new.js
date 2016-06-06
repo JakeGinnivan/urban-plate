@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { asyncConnect } from 'redux-connect'
 import NewRecipeForm from './components/new-recipe-form'
 import { loadUnits, createRecipe } from '../../app.redux'
-import { loadIngredients } from '../ingredients/ingredients.redux'
+import { loadIngredients } from '../../ingredients.redux'
 import autobind from 'autobind-decorator'
 
 @asyncConnect([{
