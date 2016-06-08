@@ -6,6 +6,7 @@ import { loadRecipe, loadDifficulties, loadUnits } from '../../app.redux'
 import { loadIngredients } from '../../ingredients.redux'
 import styles from './view.module.scss'
 import _ from 'lodash'
+import { toReadableFraction, fractionToDecimal } from 'readable-fractions'
 
 const Headline = props => (
   <div className={styles.headline} style={{ borderRight: props.separator ? '1px solid lightgrey' : 'none' }}>
@@ -15,7 +16,12 @@ const Headline = props => (
 )
 
 const Ingredient = ({ ingredient, ingredientLookup, unitLookup, qtyModifier }) => {
-  const qty = ingredient.qty * qtyModifier
+  let qty
+  if (ingredient.qty.indexOf('/') === -1) {
+    qty = ingredient.qty * qtyModifier
+  } else {
+    qty = toReadableFraction(fractionToDecimal(ingredient.qty) * qtyModifier, true)
+  }
   // TODO support fractions
   return (
     <div className={styles.ingredient}>
