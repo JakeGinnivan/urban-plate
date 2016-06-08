@@ -56,7 +56,8 @@ app.use((req, res) => {
 
         let bundleScriptFile
         const assets = global.webpack_isomorphic_tools.assets()
-        if (process.env.SSR === true) {
+
+        if (process.env.SSR === 'true') {
           // You can also check renderProps.components or renderProps.routes for
           // your "not found" component or route respectively, and send a 404 as
           // below, if you're using a catch-all route.

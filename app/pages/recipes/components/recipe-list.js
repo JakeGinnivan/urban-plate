@@ -7,7 +7,7 @@ const RecipeList = ({ recipes }) => (
   <div>
     {recipes.length === 0 && <div>No recipes</div>}
     {recipes.map(r => (
-      <Link to={`/recipes/${r.id}`}>{r.name}</Link>
+      <Link to={`/recipes/${r.id}`} key={r.id}>{r.name}</Link>
     ))}
     <Pager>
       <PageItem previous href='#'>&larr; Previous Page</PageItem>
