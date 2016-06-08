@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import { browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
+import { middleware as NotificationMiddleware } from 'react-redux-notifications'
 import { createStore, applyMiddleware, compose } from 'redux'
 import reducers from './app.redux'
 const dest = document.getElementById('app')
@@ -13,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Create redux store
-const middleware = [thunk]
+const middleware = [thunk, NotificationMiddleware]
 
 let finalCreateStore
 if (__DEV__) {

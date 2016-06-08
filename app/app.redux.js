@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
 import { reducer as reduxAsyncConnect } from 'redux-connect'
+import { reducer as notifications } from 'react-redux-notifications'
 import ingredients from './ingredients.redux'
 import _ from 'lodash'
 
@@ -172,6 +173,7 @@ const reducers = combineReducers({
   app: appReducer,
   form: formReducer,
   reduxAsyncConnect,
-  ingredients
+  ingredients,
+  notifications
 })
 export default reducers
