@@ -1,8 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { asyncConnect } from 'redux-connect'
 import { loadRecipes } from '../../app.redux'
-import RecipeList from './components/recipe-list'
+import RecipeList from './components/RecipeList'
 
 @asyncConnect([{
   promise: ({ store }) => Promise.all([

@@ -1,9 +1,36 @@
 import React from 'react'
 import { Field, FieldArray, reduxForm } from 'redux-form'
 import { FormGroup, FormControl, Button } from 'react-bootstrap'
-import IngredientInput from './ingredient-input'
+import IngredientInput from './IngredientInput'
 
 const NewRecipeForm = props => {
+  const renderInput = ingredient => (
+    <IngredientInput
+      {...ingredient.input}
+      units={props.units}
+      ingredients={props.ingredients}
+    />
+  );
+  const renderIngredient = ({ fields }) => (
+    <div>
+      {fields.map((name, index) => (
+        <Field key={index.toString()} name={name} component={renderInput} />
+      ))}
+      <Button onClick={() => fields.push({})}>Add Ingredient</Button>
+    </div>
+  )
+
+
+  const renderInstructionFormControl = v => <FormControl {...v.input} />
+  const renderInstruction = ({fields}) => (
+    <div>
+      {fields.map((name, index) => (
+        <Field key={index.toString()} name={name} component={renderInstructionFormControl} type='text' />
+      ))}
+      <Button onClick={() => fields.push('')}>Add Step</Button>
+    </div>
+  )
+
   const { handleSubmit, pristine, submitting, difficulties } = props
   return (
     <form onSubmit={handleSubmit}>
@@ -38,32 +65,9 @@ const NewRecipeForm = props => {
       </FormGroup>
 
       <h2>Ingredients</h2>
-      <FieldArray name='ingredients' component={ingredients => (
-        <div>
-          {ingredients.map((name, index) => (
-            <Field key={index.toString()} name={name} component={ingredient => (
-              <IngredientInput
-                {...ingredient}
-                units={props.units}
-                ingredients={props.ingredients}
-              />
-            )}
-            />
-          ))}
-          <Button onClick={() => ingredients.push({})}>Add Ingredient</Button>
-        </div>
-      )}
-      />
+      <FieldArray name='ingredients' component={renderIngredient} />
       <h2>Steps</h2>
-      <FieldArray name='instructions' component={steps => (
-        <div>
-          {steps.map((name, index) => (
-            <Field key={index.toString()} name={name} component={v => <FormControl {...v} />} type='text' />
-          ))}
-          <Button onClick={() => steps.push('')}>Add Step</Button>
-        </div>
-      )}
-      />
+      <FieldArray name='instructions' component={renderInstruction} />
       <Button type='submit' bsStyle='primary' disabled={pristine || submitting}>Submit</Button>
     </form>
   )

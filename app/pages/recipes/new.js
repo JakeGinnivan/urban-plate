@@ -1,7 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { asyncConnect } from 'redux-connect'
-import NewRecipeForm from './components/new-recipe-form'
+import NewRecipeForm from './components/NewRecipeForm'
 import { InlineNotification } from 'react-redux-notifications'
 import { loadUnits, createRecipe, loadDifficulties, CREATE_RECIPE } from '../../app.redux'
 import { loadIngredients } from '../../ingredients.redux'

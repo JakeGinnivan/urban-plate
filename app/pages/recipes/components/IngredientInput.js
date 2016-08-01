@@ -1,30 +1,16 @@
 import React from 'react'
-import style from './ingredient-input.module.scss'
-import autobind from 'autobind-decorator'
-import { MenuItem, Glyphicon } from 'react-bootstrap'
+import style from './IngredientInput.module.scss'
+import { MenuItem } from 'react-bootstrap'
+import Suggestion from './Suggestion'
+import FocusOnMountInput from './FocusOnMountInput'
 import _ from 'lodash'
 
 const ESCAPE = 27
 const DOWN = 40
 const UP = 38
+const SPACE = 32
+const BACKSPACE = 8
 
-const Suggestion = ({ searchTerm, text, isSelected }) => (
-  <div>{isSelected && <Glyphicon glyph='chevron-right' />}{text}</div>
-)
-
-class FocusOnMountInput extends React.Component {
-  componentDidMount() {
-    if (this.input) {
-      this.input.focus()
-      this.input.setSelectionRange(0, this.input.value.length)
-    }
-  }
-  render() {
-    return <input ref={i => { this.input = i }} {...this.props} />
-  }
-}
-
-@autobind
 export default class IngredientInput extends React.Component {
   static propTypes = {
     units: React.PropTypes.array.isRequired,
@@ -35,6 +21,7 @@ export default class IngredientInput extends React.Component {
 
   constructor(props) {
     super(props)
+    console.log('Form', props)
     this.state = {
       currentValue: '',
       qty: props.value.qty,
@@ -48,7 +35,7 @@ export default class IngredientInput extends React.Component {
     }
   }
 
-  getIngredientsSuggestions(text, unit) {
+  getIngredientsSuggestions = (text, unit) => {
     return _.filter(
         this.props.ingredients,
         u => u.name.toLowerCase().indexOf(text.toLowerCase()) !== -1 &&
@@ -56,19 +43,21 @@ export default class IngredientInput extends React.Component {
         .map(u => ({ text: u.name, value: u }))
   }
 
-  getUnitsSuggestions(text) {
+  getUnitsSuggestions = (text) => {
     const unitSuggestions = _.filter(
       this.props.units,
       u => u.name.toLowerCase().indexOf(text.toLowerCase()) !== -1)
       .map(u => ({ text: `${u.name}${u.abbreviation ? ` (${u.abbreviation})` : ''}`, value: u, isIngredient: false }))
     const countIngredients = _.filter(
-      this.props.ingredients,
-      i => i.measuredBy === 'count')
+        this.props.ingredients,
+        i => i.measuredBy === 'count'
+      )
       .map(u => ({ text: u.name, value: u, isIngredient: true }))
+
     return _.concat(unitSuggestions, countIngredients)
   }
 
-  changed(overrides) {
+  changed = (overrides) => {
     this.props.onChange({
       qty: overrides.hasOwnProperty('qty') ? (overrides.qty || undefined) : this.state.qty,
       unit: overrides.hasOwnProperty('unit')
@@ -80,11 +69,11 @@ export default class IngredientInput extends React.Component {
     })
   }
 
-  handleInputChanged(e) {
+  handleInputChanged = (e) => {
     this.setState({ currentValue: e.target.value, suggestions: this.getSuggestions(e.target.value) })
   }
 
-  getSuggestions(forText) {
+  getSuggestions = (forText) => {
     let suggestions = this.state.suggestions
     if (this.state.editingUnit) {
       suggestions = this.getUnitsSuggestions(forText)
@@ -95,10 +84,10 @@ export default class IngredientInput extends React.Component {
     return suggestions
   }
 
-  handleInputKeyDown(e) {
+  handleInputKeyDown = (e) => {
     console.log(e.keyCode)
     // Handle space
-    if (this.state.editingQty && e.keyCode === 32) {
+    if (this.state.editingQty && e.keyCode === SPACE) {
       const qty = e.target.value
       this.setState({
         qty,
@@ -110,7 +99,7 @@ export default class IngredientInput extends React.Component {
       this.changed({ qty })
       e.stopPropagation()
       e.preventDefault()
-    } else if (this.state.editingUnit && e.keyCode === 8 && this.state.currentValue === '') {
+    } else if (this.state.editingUnit && e.keyCode === BACKSPACE && this.state.currentValue === '') {
       // Handle backspace on unit
       this.setState({
         qty: '',
@@ -120,7 +109,7 @@ export default class IngredientInput extends React.Component {
         suggestions: []
       })
       this.changed({ qty: false })
-    } else if (this.state.editingIngredient && e.keyCode === 8 && this.state.currentValue === '') {
+    } else if (this.state.editingIngredient && e.keyCode === BACKSPACE && this.state.currentValue === '') {
       // Handle backspace on ingredient
       this.setState({
         unit: '',
@@ -158,7 +147,7 @@ export default class IngredientInput extends React.Component {
     }
   }
 
-  selectSuggestion(suggestion) {
+  selectSuggestion = (suggestion) => {
     if (this.state.editingUnit && !suggestion.isIngredient) {
       let ingredient = this.state.ingredient
       if (ingredient && suggestion.value.type !== ingredient.measuredBy) {
@@ -191,7 +180,7 @@ export default class IngredientInput extends React.Component {
     }
   }
 
-  inputPlaceholder() {
+  inputPlaceholder = () => {
     if (this.state.editingQty) {
       return 'weight/qty/volume'
     }
@@ -203,7 +192,7 @@ export default class IngredientInput extends React.Component {
     }
   }
 
-  editQty() {
+  editQty = () => {
     this.setState({
       editingQty: true,
       editingUnit: false,
@@ -214,7 +203,7 @@ export default class IngredientInput extends React.Component {
     })
   }
 
-  editUnit() {
+  editUnit = () => {
     const currentText = this.state.unit ? this.state.unit.name : ''
     this.setState({
       editingQty: false,
@@ -226,7 +215,7 @@ export default class IngredientInput extends React.Component {
     })
   }
 
-  editIngredient() {
+  editIngredient = () => {
     this.setState({
       editingQty: false,
       editingUnit: false,

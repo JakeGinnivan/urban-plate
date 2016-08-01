@@ -1,7 +1,7 @@
 import React from 'react'
-import { Pager, PageItem } from 'react-bootstrap'
+import { Pager } from 'react-bootstrap'
 import { Link } from 'react-router'
-import styles from './recipe-list.module.scss'
+import styles from './RecipeList.module.scss'
 
 const RecipeList = ({ recipes }) => (
   <div>
@@ -10,8 +10,8 @@ const RecipeList = ({ recipes }) => (
       <Link to={`/recipes/${r.id}`} key={r.id}>{r.name}</Link>
     ))}
     <Pager>
-      <PageItem previous href='#'>&larr; Previous Page</PageItem>
-      <PageItem next href='#'>Next Page &rarr; </PageItem>
+      <Pager.Item previous href='#'>&larr; Previous Page</Pager.Item>
+      <Pager.Item next href='#'>Next Page &rarr; </Pager.Item>
     </Pager>
   </div>
 )
