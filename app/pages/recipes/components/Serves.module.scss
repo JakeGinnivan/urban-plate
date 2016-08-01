@@ -1,0 +1,13 @@
+.changeServeSize {
+  display: inline-block;
+  cursor: pointer;
+
+  &:hover {
+    font-weight: bold;
+  }
+}
+
+.serves {
+  display: inline-block;
+  margin: 5px;
+}

@@ -5,28 +5,25 @@ import NewRecipeForm from './components/new-recipe-form'
 import { InlineNotification } from 'react-redux-notifications'
 import { loadUnits, createRecipe, loadDifficulties, CREATE_RECIPE } from '../../app.redux'
 import { loadIngredients } from '../../ingredients.redux'
-import autobind from 'autobind-decorator'
 import { Alert } from 'react-bootstrap'
 
 @asyncConnect([{
   promise: (props) => Promise.all([
-    props.store.getState().app.unitsLoaded ?  Promise.resolve() : props.store.dispatch(loadUnits()),
-    props.store.getState().app.difficultiesLoaded ?  Promise.resolve() : props.store.dispatch(loadDifficulties()),
-    props.store.getState().ingredients.loaded ?  Promise.resolve() : props.store.dispatch(loadIngredients())
+    props.store.getState().app.unitsLoaded ? Promise.resolve() : props.store.dispatch(loadUnits()),
+    props.store.getState().app.difficultiesLoaded ? Promise.resolve() : props.store.dispatch(loadDifficulties()),
+    props.store.getState().ingredients.loaded ? Promise.resolve() : props.store.dispatch(loadIngredients())
   ])
-}])
-@connect(state => ({
+}], state => ({
   units: state.app.units || [],
   difficulties: state.app.difficulties || [],
   ingredients: state.ingredients.list || []
 }))
-@autobind
 export default class RecipeIndex extends React.Component {
   static propTypes = {
     dispatch: React.PropTypes.func.isRequired
   }
 
-  handleSubmit(formData) {
+  handleSubmit = (formData) => {
     return this.props.dispatch(createRecipe(formData))
       .then(() => this.props.dispatch({ type: 'redux-form/RESET', meta: { form: 'new-recipe' } }))
   }

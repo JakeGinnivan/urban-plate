@@ -5,11 +5,10 @@ import { loadRecipes } from '../../app.redux'
 import RecipeList from './components/recipe-list'
 
 @asyncConnect([{
-  promise: (props) => Promise.all([
-    props.store.getState().app.recipesLoaded ? Promise.resolve() : props.store.dispatch(loadRecipes())
+  promise: ({ store }) => Promise.all([
+    store.getState().app.recipesLoaded ? Promise.resolve() : store.dispatch(loadRecipes())
   ])
-}])
-@connect(state => ({
+}], state => ({
   recipes: state.app.recipes || []
 }))
 export default class RecipeIndex extends React.Component {

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
+import RecipeContainer from './recipe-container'
 import Index from './index'
 import New from './new'
 import View from './view'
-import RecipeContainer from './recipe-container'
 
 export default (
   <Route path='/recipes' component={RecipeContainer}>
