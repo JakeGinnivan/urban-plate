@@ -4,6 +4,7 @@ import { reducer as formReducer } from 'redux-form'
 import { reducer as reduxAsyncConnect } from 'redux-connect'
 import { reducer as notifications } from 'react-redux-notifications'
 import ingredients from './ingredients.redux'
+import admin from './pages/admin/admin.redux'
 import _ from 'lodash'
 
 export const LOAD_UNITS = 'app/LOAD_UNITS'
@@ -174,6 +175,7 @@ const reducers = combineReducers({
   form: formReducer,
   reduxAsyncConnect,
   ingredients,
-  notifications
+  notifications,
+  admin
 })
 export default reducers

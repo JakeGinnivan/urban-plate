@@ -28,6 +28,7 @@ class AppContainer extends React.Component {
             <LinkContainer to='/recipes'><NavItem>Recipes</NavItem></LinkContainer>
             <LinkContainer to='/ingredients'><NavItem>ingredients</NavItem></LinkContainer>
             <LinkContainer to='/about'><NavItem>About</NavItem></LinkContainer>
+            <LinkContainer to='/admin'><NavItem>Admin</NavItem></LinkContainer>
           </Nav>
         </Navbar>
         <PageLoadingNotification loading={this.props.pageLoading} />
