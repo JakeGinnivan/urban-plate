@@ -6,7 +6,9 @@ import './app.scss'
 import 'isomorphic-fetch'
 
 const App = ({ history } : { history: any }) => (
-  <Router history={history}>
+  <Router history={history} render={(props) => {
+      return <ReduxAsyncConnect {...props} /> as any
+    }}>
     {routes}
   </Router>
 )
