@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 const Headline = ({ header, value, separator }) => (
   <div style={{ borderRight: separator ? '1px solid lightgrey' : 'none', display: 'inline-block', padding: '0 15px' }}>

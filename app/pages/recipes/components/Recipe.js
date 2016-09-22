@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import Ingredient from './Ingredient'
 
 const Recipe = ({ ingredients, instructions, qtyModifier, ingredientLookup, unitLookup }) => (

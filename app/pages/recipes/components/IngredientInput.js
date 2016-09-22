@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import style from './IngredientInput.module.scss'
 import { MenuItem } from 'react-bootstrap'
 import Suggestion from './Suggestion'

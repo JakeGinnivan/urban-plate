@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import classNames from 'classnames'
 import './page-loading-notification.scss'
 import autobind from 'autobind-decorator'
@@ -6,7 +6,7 @@ import autobind from 'autobind-decorator'
 const intervalTime = 50
 
 @autobind
-class PageLoadingNotification extends Component {
+class PageLoadingNotification extends React.Component {
   static propTypes = {
     loading: React.PropTypes.bool.isRequired
   }

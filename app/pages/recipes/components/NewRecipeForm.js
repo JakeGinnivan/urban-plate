@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Field, FieldArray, reduxForm } from 'redux-form'
 import { FormGroup, FormControl, Button } from 'react-bootstrap'
 import IngredientInput from './IngredientInput'

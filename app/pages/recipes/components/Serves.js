@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import styles from './Serves.module.scss'
 
 const Serves = ({ increase, decrease, recipeServes, servesModifier }) => {
