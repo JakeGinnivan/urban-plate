@@ -10,24 +10,35 @@ const NewRecipeForm = props => {
       units={props.units}
       ingredients={props.ingredients}
     />
-  );
+  )
+
   const renderIngredient = ({ fields }) => (
     <div>
       {fields.map((name, index) => (
-        <Field key={index.toString()} name={name} component={renderInput} />
-      ))}
-      <Button onClick={() => fields.push({})}>Add Ingredient</Button>
+        <Field key={index.toString() } name={name} component={renderInput} />
+      )) }
+      <Button onClick={() => fields.push({}) }>Add Ingredient</Button>
     </div>
   )
 
+  const renderFormControl = ({ input }) => <FormControl {...input} />
 
-  const renderInstructionFormControl = v => <FormControl {...v.input} />
-  const renderInstruction = ({fields}) => (
+  const renderDifficultySelectFormControl = ({ difficulties, input }) => (
+    <FormControl {...input} componentClass='select'>
+      {difficulties.map(d => (
+        <option key={d.id} value={d.id}>{d.name}</option>
+      )) }
+    </FormControl>
+  )
+
+  const renderInstruction = ({ fields }) => (
     <div>
       {fields.map((name, index) => (
-        <Field key={index.toString()} name={name} component={renderInstructionFormControl} type='text' />
-      ))}
-      <Button onClick={() => fields.push('')}>Add Step</Button>
+        <Field key={index.toString() }
+          name={name} component={renderFormControl} type='text'
+        />
+      )) }
+      <Button onClick={() => fields.push('') }>Add Step</Button>
     </div>
   )
 
@@ -36,32 +47,28 @@ const NewRecipeForm = props => {
     <form onSubmit={handleSubmit}>
       <FormGroup>
         <label>Recipe Name</label>
-        <Field name='name' component={v => <FormControl {...v} />} type='text' />
+        <Field name='name' component={renderFormControl} type='text' />
       </FormGroup>
       <FormGroup>
         <label>Difficultly</label>
-        <Field name='difficulty' component={v => (
-          <FormControl {...v} componentClass='select'>
-            {difficulties.map(d => (
-              <option key={d.id} value={d.id}>{d.name}</option>
-            ))}
-          </FormControl>
-        )}
+        <Field name='difficulty'
+          difficulties={difficulties}
+          component={renderDifficultySelectFormControl}
         />
       </FormGroup>
 
       <FormGroup>
         <label>Prep time</label>
-        <Field name='prepTime' component={v => <FormControl {...v} />} type='text' />
+        <Field name='prepTime' component={renderFormControl} type='text' />
       </FormGroup>
 
       <FormGroup>
         <label>Total time</label>
-        <Field name='totalTime' component={v => <FormControl {...v} />} type='text' />
+        <Field name='totalTime' component={renderFormControl} type='text' />
       </FormGroup>
       <FormGroup>
         <label>Number servings</label>
-        <Field name='serves' component={v => <FormControl {...v} />} type='text' />
+        <Field name='serves' component={renderFormControl} type='text' />
       </FormGroup>
 
       <h2>Ingredients</h2>
