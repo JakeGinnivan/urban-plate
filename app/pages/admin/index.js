@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button } from 'react-bootstrap'
 import { logIn, logOut } from './admin.redux'
+import LoginForm from './components/LoginForm'
 
 @connect(state => ({
   loggedIn: state.admin.loggedIn
@@ -23,10 +23,7 @@ class Admin extends React.Component {
     return (
       <div>
         <div>Logged in: {this.props.loggedIn.toString()}</div>
-        <div>
-          <Button onClick={ this.logIn }>Log In</Button>
-          <Button onClick={ this.logOut }>Log Out</Button>
-        </div>
+        <LoginForm onSubmit={this.logIn} />
       </div>
     )
   }
