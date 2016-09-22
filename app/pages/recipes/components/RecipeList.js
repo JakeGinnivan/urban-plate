@@ -8,9 +8,9 @@ const RecipeList = ({ recipes }) => (
   <div>
     {recipes.length === 0 && <div>No recipes</div>}
     <ul>
-    {recipes.map(r => (
-      <li><Link to={`/recipes/${r.id}`} key={r.id}>{r.name}</Link></li>
-    ))}
+      {recipes.map(r => (
+        <li key={r.id}><Link to={`/recipes/${r.id}`}>{r.name}</Link></li>
+      ))}
     </ul>
     <Link to='/recipes/new'>
       <Button>New Recipe</Button>
