@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { asyncConnect } from 'redux-connect'
 import { loadIngredients } from '../../ingredients.redux'
 import styles from './styles.module.scss'
+import { Link } from 'react-router'
+import { Button } from 'react-bootstrap'
 
 @asyncConnect([{
   promise: (props) => {
@@ -26,9 +28,16 @@ class IngredientsIndex extends React.Component {
   render() {
     return (
       <div>
-        {this.props.ingredients.map(i => (
-          <div key={i.id.toString()} className={styles.ingredient}>{i.name}</div>
-        ))}
+        <div>
+          {this.props.ingredients.map(i => (
+            <div key={i.id.toString()} className={styles.ingredient}>{i.name}</div>
+          ))}
+        </div>
+        <div>
+          <Link to='/ingredients/new'>
+            <Button>New Ingredient</Button>
+          </Link>
+        </div>
       </div>
     )
   }

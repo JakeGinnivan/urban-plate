@@ -26,7 +26,7 @@ class AppContainer extends React.Component {
           </Navbar.Header>
           <Nav>
             <LinkContainer to='/recipes'><NavItem>Recipes</NavItem></LinkContainer>
-            <LinkContainer to='/ingredients'><NavItem>ingredients</NavItem></LinkContainer>
+            <LinkContainer to='/ingredients'><NavItem>Ingredients</NavItem></LinkContainer>
             <LinkContainer to='/about'><NavItem>About</NavItem></LinkContainer>
             <LinkContainer to='/admin'><NavItem>Admin</NavItem></LinkContainer>
           </Nav>

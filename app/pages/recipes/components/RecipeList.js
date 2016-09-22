@@ -2,13 +2,19 @@ import React from 'react'
 import { Pager } from 'react-bootstrap'
 import { Link } from 'react-router'
 import styles from './RecipeList.module.scss'
+import { Button } from 'react-bootstrap'
 
 const RecipeList = ({ recipes }) => (
   <div>
     {recipes.length === 0 && <div>No recipes</div>}
+    <ul>
     {recipes.map(r => (
-      <Link to={`/recipes/${r.id}`} key={r.id}>{r.name}</Link>
+      <li><Link to={`/recipes/${r.id}`} key={r.id}>{r.name}</Link></li>
     ))}
+    </ul>
+    <Link to='/recipes/new'>
+      <Button>New Recipe</Button>
+    </Link>
     <Pager>
       <Pager.Item previous href='#'>&larr; Previous Page</Pager.Item>
       <Pager.Item next href='#'>Next Page &rarr; </Pager.Item>
