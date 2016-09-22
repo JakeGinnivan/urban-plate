@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { connect } from 'react-redux'
 import { logIn, logOut } from './admin.redux'
 import LoginForm from './components/LoginForm'
