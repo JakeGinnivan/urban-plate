@@ -1,6 +1,10 @@
 export const LOAD_INGREDIENTS = 'ingredients/LOAD'
 export const CREATE_INGREDIENT = 'ingredients/CREATE'
 
+export interface IIngredientState {
+  loaded: boolean
+}
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -67,7 +71,7 @@ export function create(ingredient) {
   }
 }
 
-export default function (state = {}, action) {
+export default function (state: IIngredientState = {}, action) {
   switch (action.type) {
     case `${LOAD_INGREDIENTS}_SUCCESS`:
       return Object.assign({}, state, {

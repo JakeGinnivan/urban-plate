@@ -6,6 +6,11 @@ import { reducer as notifications } from 'react-redux-notifications'
 import ingredients from './ingredients.redux'
 import admin from './pages/admin/admin.redux'
 import _ from 'lodash'
+import { Dispatch } from 'app.d'
+
+export interface IAppState {
+
+}
 
 export const LOAD_UNITS = 'app/LOAD_UNITS'
 export const LOAD_DIFFICULTIES = 'app/LOAD_DIFFICULTIES'
@@ -27,7 +32,7 @@ function parseJSON(response) {
 }
 
 export function loadRecipes() {
-  return dispatch => {
+  return (dispatch: Dispatch) => {
     dispatch({ type: LOAD_RECIPES })
 
     try {
@@ -36,9 +41,8 @@ export function loadRecipes() {
         .then(parseJSON)
         .then((data) => {
           dispatch({
-            type: `${LOAD_RECIPES}_SUCCESS`,
             result: data
-          })
+          } as ILoadRecipesSuccess)
         }).catch((error) => {
           console.log('request failed', error)
         })
@@ -143,27 +147,42 @@ export function createRecipe(recipe) {
   }
 }
 
-const appReducer = (state = {}, action) => {
+interface IUnit {
+
+}
+
+interface ILoadUnitsSuccess {
+  type: "LOAD_UNITS_SUCCESS"
+  payload: IUnit[]
+}
+
+interface ILoadRecipesSuccess {
+  type: "LOAD_RECIPES_SUCCESS"
+}
+
+type Actions = ILoadUnitsSuccess | ILoadRecipesSuccess
+
+const appReducer = (state: IAppState = {}, action: Actions): IAppState => {
   switch (action.type) {
-    case `${LOAD_UNITS}_SUCCESS`:
+    case "LOAD_UNITS_SUCCESS":
       return Object.assign({}, state, {
-        units: action.result,
+        units: action.payload,
         unitsLoaded: true
       })
-    case `${LOAD_RECIPES}_SUCCESS`:
+    case "LOAD_RECIPES_SUCCESS":
       return Object.assign({}, state, {
         recipes: action.result,
         recipesLoaded: true
       })
-    case `${LOAD_RECIPE}_SUCCESS`:
-      return Object.assign({}, state, {
-        currentRecipe: action.result
-      })
-    case `${LOAD_DIFFICULTIES}_SUCCESS`:
-      return Object.assign({}, state, {
-        difficulties: action.result,
-        difficultiesLoaded: true
-      })
+    // case `${LOAD_RECIPE}_SUCCESS`:
+    //   return Object.assign({}, state, {
+    //     currentRecipe: action.result
+    //   })
+    // case `${LOAD_DIFFICULTIES}_SUCCESS`:
+    //   return Object.assign({}, state, {
+    //     difficulties: action.result,
+    //     difficultiesLoaded: true
+    //   })
     default:
       return state
   }
