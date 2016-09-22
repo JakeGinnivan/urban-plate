@@ -1,22 +1,32 @@
 import * as React from 'react'
 import './page-loading-notification.scss'
-import autobind from 'autobind-decorator'
 
-var classNames = require('classnames')
+var autobind: any = require('autobind-decorator')
+var classNames: any = require('classnames')
 const intervalTime = 50
 
+interface IPageLoadingNotificationProps {
+    loading: boolean
+}
+
+interface IPageLoadingNotificationState {
+    percent: number
+}
+
 @autobind
-class PageLoadingNotification extends React.Component {
+class PageLoadingNotification extends React.Component<IPageLoadingNotificationProps, IPageLoadingNotificationState> {
+  interval: any
+  
   static propTypes = {
     loading: React.PropTypes.bool.isRequired
   }
 
-  constructor(props) {
+  constructor(props: any) {
     super(props)
     this.state = { percent: 0 }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: IPageLoadingNotificationProps) {
     if (!this.props.loading && nextProps.loading) {
       this.setState({ percent: 10 })
       this.interval = setInterval(this.increment, intervalTime)
