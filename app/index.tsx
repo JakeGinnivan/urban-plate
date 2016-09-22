@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import * as  React from 'react'
+import * as ReactDOM from 'react-dom'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import { browserHistory } from 'react-router'
@@ -8,6 +8,10 @@ import { middleware as NotificationMiddleware } from 'react-redux-notifications'
 import { createStore, applyMiddleware, compose } from 'redux'
 import reducers from './app.redux'
 const dest = document.getElementById('app')
+
+declare var process: any
+declare var window: any
+declare var __DEV__: any
 
 if (process.env.NODE_ENV !== 'production') {
   window.React = React // enable debugger
@@ -32,7 +36,7 @@ const history = syncHistoryWithStore(browserHistory, store)
 
 // Render app function
 let render = () => {
-  let App = require('./app').default
+  let App = require<any>('./app').default
   ReactDOM.render(
     <Provider store={store}>
       <App history={history} />
@@ -44,7 +48,7 @@ let render = () => {
 if (module.hot) {
   const renderApp = render
   const renderError = (error) => {
-    const RedBox = require('redbox-react')
+    const RedBox = require<any>('redbox-react')
     ReactDOM.render(
       <RedBox error={error} />,
       dest
@@ -61,7 +65,7 @@ if (module.hot) {
     setTimeout(render)
   })
   module.hot.accept('./app.redux', () => {
-    store.replaceReducer(require('./app.redux').default)
+    store.replaceReducer(require<any>('./app.redux').default)
   })
 }
 
