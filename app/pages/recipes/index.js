@@ -17,3 +17,4 @@ export default class RecipeIndex extends React.Component {
     )
   }
 }
+
