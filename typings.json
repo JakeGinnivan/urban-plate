@@ -7,6 +7,7 @@
     "react-redux": "registry:dt/react-redux#4.4.0+20160908183346",
     "react-router": "registry:dt/react-router#2.0.0+20160920184447",
     "react-router-redux": "registry:dt/react-router-redux#4.0.0+20160724070902",
+    "redux": "registry:dt/redux#3.5.2+20160703092728",
     "redux-form": "registry:dt/redux-form#4.0.3+20160907012813",
     "redux-thunk": "registry:dt/redux-thunk#2.1.0+20160703120921",
     "webpack-env": "registry:dt/webpack-env#1.12.2+20160316155526"

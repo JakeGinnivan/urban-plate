@@ -7,7 +7,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { middleware as NotificationMiddleware } from 'react-redux-notifications'
 import { createStore, applyMiddleware, compose } from 'redux'
 import reducers from './app.redux'
-const dest = document.getElementById('app')
+const dest = document.getElementById('app') as Element
 
 declare var process: any
 declare var window: any
@@ -20,7 +20,8 @@ if (process.env.NODE_ENV !== 'production') {
 // Create redux store
 const middleware = [thunk, NotificationMiddleware]
 
-let finalCreateStore
+
+let finalCreateStore: any
 if (__DEV__) {
   finalCreateStore = compose(
     applyMiddleware(...middleware),
@@ -47,8 +48,8 @@ let render = () => {
 // re-render the app if there are no render errors
 if (module.hot) {
   const renderApp = render
-  const renderError = (error) => {
-    const RedBox = require<any>('redbox-react')
+  const renderError = (error: any) => {
+    const RedBox = require<any>('redbox-react').default
     ReactDOM.render(
       <RedBox error={error} />,
       dest
