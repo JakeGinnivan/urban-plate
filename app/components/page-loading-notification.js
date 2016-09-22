@@ -1,8 +1,8 @@
 import * as React from 'react'
-import classNames from 'classnames'
 import './page-loading-notification.scss'
 import autobind from 'autobind-decorator'
 
+var classNames = require('classnames')
 const intervalTime = 50
 
 @autobind
