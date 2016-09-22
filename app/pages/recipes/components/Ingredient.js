@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { toReadableFraction, fractionToDecimal } from 'readable-fractions'
 import styles from './Ingredient.module.scss'
 

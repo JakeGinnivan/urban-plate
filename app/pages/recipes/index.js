@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { asyncConnect } from 'redux-connect'
 import { loadRecipes } from '../../app.redux'
 import RecipeList from './components/RecipeList'

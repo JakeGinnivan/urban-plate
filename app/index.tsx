@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import * as  React from 'react'
+import * as ReactDOM from 'react-dom'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import { browserHistory } from 'react-router'
@@ -7,7 +7,11 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { middleware as NotificationMiddleware } from 'react-redux-notifications'
 import { createStore, applyMiddleware, compose } from 'redux'
 import reducers from './app.redux'
-const dest = document.getElementById('app')
+const dest = document.getElementById('app') as Element
+
+declare var process: any
+declare var window: any
+declare var __DEV__: any
 
 if (process.env.NODE_ENV !== 'production') {
   window.React = React // enable debugger
@@ -16,7 +20,8 @@ if (process.env.NODE_ENV !== 'production') {
 // Create redux store
 const middleware = [thunk, NotificationMiddleware]
 
-let finalCreateStore
+
+let finalCreateStore: any
 if (__DEV__) {
   finalCreateStore = compose(
     applyMiddleware(...middleware),
@@ -32,7 +37,7 @@ const history = syncHistoryWithStore(browserHistory, store)
 
 // Render app function
 let render = () => {
-  let App = require('./app').default
+  let App = require<any>('./app').default
   ReactDOM.render(
     <Provider store={store}>
       <App history={history} />
@@ -43,8 +48,8 @@ let render = () => {
 // re-render the app if there are no render errors
 if (module.hot) {
   const renderApp = render
-  const renderError = (error) => {
-    const RedBox = require('redbox-react')
+  const renderError = (error: any) => {
+    const RedBox = require<any>('redbox-react').default
     ReactDOM.render(
       <RedBox error={error} />,
       dest
@@ -61,7 +66,7 @@ if (module.hot) {
     setTimeout(render)
   })
   module.hot.accept('./app.redux', () => {
-    store.replaceReducer(require('./app.redux').default)
+    store.replaceReducer(require<any>('./app.redux').default)
   })
 }
 

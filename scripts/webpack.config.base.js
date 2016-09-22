@@ -12,7 +12,8 @@ var webpackIsomorphicToolsConfig = require('./webpack-isomorphic-tools-config')
 module.exports = {
   module: {
     loaders: [
-      { test: /\.js$/, loaders: ['babel'], exclude: /node_modules/ },
+      { test: /\.js$/, loaders: ['babel', 'ts-loader'], exclude: /node_modules/ },
+      { test: /\.tsx?$/, loader: 'ts-loader' },
       { test: /\.json$/, loader: 'json' },
       { test: /\.(woff2?|svg)$/, loader: 'url?limit=10000' },
       { test: /\.(ttf|eot)$/, loader: 'file' },
@@ -27,7 +28,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['', '.js', '.ts', '.tsx'],
     root: [
       path.resolve(path.join(__dirname, '../app'))
     ]

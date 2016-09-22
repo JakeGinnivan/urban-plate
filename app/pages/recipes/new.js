@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { asyncConnect } from 'redux-connect'
 import NewRecipeForm from './components/NewRecipeForm'
 import { InlineNotification } from 'react-redux-notifications'

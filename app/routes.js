@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import AppContainer from './pages/app-container'
 import Home from './pages/home'
 import NotFound from './pages/404'

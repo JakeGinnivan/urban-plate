@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Glyphicon } from 'react-bootstrap'
 
 const Suggestion = ({ text, isSelected }) => (
