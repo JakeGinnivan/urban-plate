@@ -1,26 +1,28 @@
-export const LOAD_INGREDIENTS = 'ingredients/LOAD'
-export const CREATE_INGREDIENT = 'ingredients/CREATE'
+import { Dispatch } from 'app.d'
+import {actionCreator, isType, createNewState, Action} from 'helpers/redux'
+
+const LOAD_INGREDIENTS = actionCreator<void, IIngredient[], void>('LOAD_INGREDIENTS')
+const CREATE_INGREDIENT = actionCreator<void, IIngredient[], void>('CREATE_INGREDIENT')
 
 export interface IIngredientState {
-  loaded: boolean
+  list?: IIngredient[]
+  loaded?: boolean
 }
 
-function checkStatus(response) {
+function checkStatus(response: IResponse) {
   if (response.status >= 200 && response.status < 300) {
     return response
   }
-  const error = new Error(response.statusText)
-  error.response = response
-  throw error
+  throw new Error(response.statusText)
 }
 
-function parseJSON(response) {
+function parseJSON(response: IResponse) {
   return response.json()
 }
 
 export function loadIngredients() {
-  return dispatch => {
-    dispatch({ type: LOAD_INGREDIENTS })
+  return (dispatch: Dispatch) => {
+    dispatch(LOAD_INGREDIENTS())
 
     try {
       return fetch('http://localhost:3002/ingredients')
@@ -28,10 +30,7 @@ export function loadIngredients() {
         .then(parseJSON)
         .then((data) => {
           console.log('request succeeded with JSON response', data)
-          dispatch({
-            type: `${LOAD_INGREDIENTS}_SUCCESS`,
-            result: data
-          })
+          dispatch(LOAD_INGREDIENTS.success(data))
         }).catch((error) => {
           console.log('request failed', error)
         })
@@ -41,9 +40,9 @@ export function loadIngredients() {
   }
 }
 
-export function create(ingredient) {
-  return dispatch => {
-    dispatch({ type: CREATE_INGREDIENT })
+export function create(ingredient: IIngredient) {
+  return (dispatch: Dispatch) => {
+    dispatch(CREATE_INGREDIENT())
 
     try {
       return fetch('http://localhost:3002/ingredients', {
@@ -71,21 +70,17 @@ export function create(ingredient) {
   }
 }
 
-export default function (state: IIngredientState = {}, action) {
-  switch (action.type) {
-    case `${LOAD_INGREDIENTS}_SUCCESS`:
-      return Object.assign({}, state, {
-        list: action.result,
-        loaded: true
-      })
-    case `${CREATE_INGREDIENT}_SUCCESS`:
-      if (state.loaded) {
-        return Object.assign({}, state, {
-          list: [...state.list, action.created]
-        })
-      }
-      return state
-    default:
-      return state
+export default function (state: IIngredientState = {}, action: Action<any, any>) {
+  if (isType.success(action, LOAD_INGREDIENTS)) {
+    return createNewState(state, {
+      list: action.payload,
+      loaded: true
+    })
+  } else if (isType.success(action, CREATE_INGREDIENT)) {
+    return createNewState(state, {
+      list: state.list ? [...state.list, action.payload] : [action.payload]
+    })
   }
+
+  return state
 }
