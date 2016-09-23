@@ -4,7 +4,7 @@
 
 var webpack = require('webpack')
 var config = require('./webpack.config.base')
-var ExtractTextPlugin = require('extract-text-plugin')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 config.devtool = 'source-map'
 config.entry = './app/index'
