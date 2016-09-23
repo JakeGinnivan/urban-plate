@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { asyncConnect } from 'redux-connect'
 import { loadIngredients } from '../../ingredients.redux'
-import styles from './styles.module.scss'
+import * as styles from './styles.module.scss'
 import { Link } from 'react-router'
 import { Button } from 'react-bootstrap'
 
