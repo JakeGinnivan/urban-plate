@@ -5,40 +5,47 @@ import { reducer as reduxAsyncConnect } from 'redux-connect'
 import { reducer as notifications } from 'react-redux-notifications'
 import ingredients from './ingredients.redux'
 import admin from './pages/admin/admin.redux'
-import _ from 'lodash'
+import { Dispatch } from 'app.d'
+import {actionCreator, isType, createNewState, Action} from 'helpers/redux'
 
-export const LOAD_UNITS = 'app/LOAD_UNITS'
-export const LOAD_DIFFICULTIES = 'app/LOAD_DIFFICULTIES'
-export const CREATE_RECIPE = 'app/CREATE_RECIPE'
-export const LOAD_RECIPES = 'app/LOAD_RECIPES'
-export const LOAD_RECIPE = 'app/LOAD_RECIPE'
+export interface IAppState {
+  currentRecipe?: IRecipe
+  recipes?: IRecipe[]
+  recipesLoaded?: boolean
+  units?: IUnit[]
+  unitsLoaded?: boolean
+  difficulties?: IDifficulty[]
+  difficultiesLoaded?: boolean
+}
 
-function checkStatus(response) {
+const LOAD_UNITS = actionCreator<void, IUnit[], void>('LOAD_UNITS')
+const LOAD_RECIPES = actionCreator<void, IRecipe[], void>('LOAD_RECIPES')
+const LOAD_RECIPE = actionCreator<number, IRecipe, void>('LOAD_RECIPE')
+const LOAD_DIFFICULTIES = actionCreator<void, IDifficulty[], void>('LOAD_DIFFICULTIES')
+const CREATE_RECIPE = actionCreator<IRecipe, IRecipe, void>('CREATE_RECIPE')
+
+function checkStatus(response: IResponse) {
   if (response.status >= 200 && response.status < 300) {
     return response
   }
-  const error = new Error(response.statusText)
-  error.response = response
-  throw error
+
+  throw new Error(response.statusText)
 }
 
-function parseJSON(response) {
+function parseJSON(response: IResponse) {
   return response.json()
 }
 
 export function loadRecipes() {
-  return dispatch => {
-    dispatch({ type: LOAD_RECIPES })
+  return (dispatch: Dispatch) => {
+    dispatch(LOAD_RECIPES())
 
     try {
       return fetch('http://localhost:3002/recipes')
         .then(checkStatus)
         .then(parseJSON)
         .then((data) => {
-          dispatch({
-            type: `${LOAD_RECIPES}_SUCCESS`,
-            result: data
-          })
+          dispatch(LOAD_RECIPES.success(data))
         }).catch((error) => {
           console.log('request failed', error)
         })
@@ -48,19 +55,16 @@ export function loadRecipes() {
   }
 }
 
-export function loadRecipe(id) {
-  return dispatch => {
-    dispatch({ type: LOAD_RECIPE })
+export function loadRecipe(id: number) {
+  return (dispatch: Dispatch) => {
+    dispatch(LOAD_RECIPE(id))
 
     try {
       return fetch(`http://localhost:3002/recipes/${id}`)
         .then(checkStatus)
         .then(parseJSON)
         .then((data) => {
-          dispatch({
-            type: `${LOAD_RECIPE}_SUCCESS`,
-            result: data
-          })
+          dispatch(LOAD_RECIPE.success(data))
         }).catch((error) => {
           console.log('request failed', error)
         })
@@ -71,18 +75,15 @@ export function loadRecipe(id) {
 }
 
 export function loadUnits() {
-  return dispatch => {
-    dispatch({ type: LOAD_UNITS })
+  return (dispatch: Dispatch) => {
+    dispatch(LOAD_UNITS())
 
     try {
       return fetch('http://localhost:3002/units')
         .then(checkStatus)
         .then(parseJSON)
         .then((data) => {
-          dispatch({
-            type: `${LOAD_UNITS}_SUCCESS`,
-            result: data
-          })
+          dispatch(LOAD_UNITS.success(data))
         }).catch((error) => {
           console.log('request failed', error)
         })
@@ -92,18 +93,15 @@ export function loadUnits() {
   }
 }
 export function loadDifficulties() {
-  return dispatch => {
-    dispatch({ type: LOAD_DIFFICULTIES })
+  return (dispatch: Dispatch) => {
+    dispatch(LOAD_DIFFICULTIES())
 
     try {
       return fetch('http://localhost:3002/difficulties')
         .then(checkStatus)
         .then(parseJSON)
         .then((data) => {
-          dispatch({
-            type: `${LOAD_DIFFICULTIES}_SUCCESS`,
-            result: data
-          })
+          dispatch(LOAD_DIFFICULTIES.success(data))
         }).catch((error) => {
           console.log('request failed', error)
         })
@@ -114,9 +112,9 @@ export function loadDifficulties() {
 }
 
 
-export function createRecipe(recipe) {
-  return dispatch => {
-    dispatch({ type: CREATE_RECIPE })
+export function createRecipe(recipe: IRecipe) {
+  return (dispatch: Dispatch) => {
+    dispatch(CREATE_RECIPE(recipe))
 
     try {
       return fetch('http://localhost:3002/recipes', {
@@ -130,10 +128,7 @@ export function createRecipe(recipe) {
         .then(checkStatus)
         .then(parseJSON)
         .then((response) => {
-          dispatch({
-            type: `${CREATE_RECIPE}_SUCCESS`,
-            created: response
-          })
+          dispatch(CREATE_RECIPE.success({ recipe, response }))
         }).catch((error) => {
           console.log('request failed', error)
         })
@@ -143,30 +138,28 @@ export function createRecipe(recipe) {
   }
 }
 
-const appReducer = (state = {}, action) => {
-  switch (action.type) {
-    case `${LOAD_UNITS}_SUCCESS`:
-      return Object.assign({}, state, {
-        units: action.result,
+const appReducer = (state: IAppState = {}, action: Action<any, any>): IAppState => {
+  if (isType.success(action, LOAD_UNITS)) {
+    return createNewState(state, {
+        units: action.payload,
         unitsLoaded: true
       })
-    case `${LOAD_RECIPES}_SUCCESS`:
-      return Object.assign({}, state, {
-        recipes: action.result,
-        recipesLoaded: true
-      })
-    case `${LOAD_RECIPE}_SUCCESS`:
-      return Object.assign({}, state, {
-        currentRecipe: action.result
-      })
-    case `${LOAD_DIFFICULTIES}_SUCCESS`:
-      return Object.assign({}, state, {
-        difficulties: action.result,
-        difficultiesLoaded: true
-      })
-    default:
-      return state
+  } else if (isType.success(action, LOAD_RECIPES)) {
+    return createNewState(state, {
+      recipes: action.payload,
+      recipesLoaded: true
+    })
+  } else if (isType.success(action, LOAD_RECIPE)) {
+    return createNewState(state, {
+      currentRecipe: action.payload
+    })
+  } else if (isType.success(action, LOAD_DIFFICULTIES)) {
+    return createNewState(state, {
+      difficulties: action.payload,
+      difficultiesLoaded: true
+    })
   }
+  return state
 }
 
 const reducers = combineReducers({

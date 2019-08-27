@@ -1,4 +1,6 @@
 /// <reference path="globals/autobind-decorator/index.d.ts" />
+/// <reference path="custom/react-redux-notifications/index.d.ts" />
+/// <reference path="custom/redux-connect/index.d.ts" />
 /// <reference path="globals/isomorphic-fetch/index.d.ts" />
 /// <reference path="globals/lodash/index.d.ts" />
 /// <reference path="globals/react-dom/index.d.ts" />

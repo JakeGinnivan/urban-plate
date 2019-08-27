@@ -4,6 +4,13 @@
       "dom",
       "es2015"
     ],
+    "paths": {
+      "*": [
+        "*",
+        "app/*"
+      ]
+    },
+    "baseUrl": ".",
     "module": "commonjs",
     "moduleResolution": "node",
     "experimentalDecorators": true,
