@@ -122,6 +122,6 @@
     "redux-connect": "^2.4.0",
     "redux-form": "^6.0.5",
     "redux-thunk": "^2.0.1",
-    "serialize-javascript": "^1.2.0"
+    "serialize-javascript": "^2.1.1"
   }
 }
